@@ -1,44 +1,58 @@
 package com.bau.qa;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.bidi.log.Log;
 import org.testng.annotations.Test;
 
+import static com.bau.qa.Keyword.EMPTY_PASSWORD_WARNING;
+import static com.bau.qa.Keyword.FALSE_LOGIN_WARNING;
+import static com.bau.qa.UserPool.*;
 import static org.testng.Assert.assertEquals;
 
 public class LoginTest extends BaseTest {
 
     @Test
     public void shouldLoginWithCorrectInfo() {
+        User user = getValidUser();
         HomePage homePage = new HomePage();
-        homePage.clickLogin(driver);
+        LoginPage loginPage = homePage.clickLogin();
+        loginPage.login(user.getEmail(), user.getPassword(), true);
 
-        LoginPage loginPage = new LoginPage();
-        loginPage.login(driver, wait, "automatedbuyer-3cd5ab6d-4089-48d1-89a1-dddd722cc732@trendyol.com", "1234567a");
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[data-testid=sliderList]")));
-
-        String currentUrl = homePage.getCurrentUrl(driver);
+        String currentUrl = homePage.getCurrentUrl();
         assertEquals(currentUrl, "https://www.trendyol.com/");
 
-        String accountText = homePage.getTextOfAccountButton(driver);
+        String accountText = homePage.getTextOfAccountButton();
         assertEquals(accountText, "Hesabım");
     }
 
     @Test
     public void shouldNotLoginWithWrongPassword() {
+        User user = getFalsePasswordUser();
         HomePage homePage = new HomePage();
-        homePage.clickLogin(driver);
+        homePage.clickLogin();
 
         LoginPage loginPage = new LoginPage();
-        loginPage.login(driver, wait, "automatedbuyer-3cd5ab6d-4089-48d1-89a1-dddd722cc732@trendyol.com", "dsakjdhak");
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("error-box-wrapper")));
+        loginPage.login(user.getEmail(), user.getPassword(), false);
 
-        String warningText = loginPage.getWarningText(driver);
-        assertEquals(warningText, "E-posta adresiniz ve/veya şifreniz hatalı.");
+        String warningText = loginPage.getWarningText();
+        assertEquals(warningText, FALSE_LOGIN_WARNING);
     }
 
-    // Data
-    // Method calls for actions
-    // Assertions
+    @Test
+    public void shouldNotLoginWithEmptyPassword() {
+        User user = getEmptyPasswordUser();
+        HomePage homePage = new HomePage();
+        homePage.clickLogin();
+
+        LoginPage loginPage = new LoginPage();
+        loginPage.login(user.getEmail(), user.getPassword(), false);
+
+        String warningText = loginPage.getWarningText();
+        assertEquals(warningText, EMPTY_PASSWORD_WARNING);
+    }
+
+    /**
+     * 1- Data
+     * 2- Actions / Workflows
+     * 3- Assertion
+     * */
 }

@@ -11,21 +11,24 @@ import org.testng.annotations.BeforeMethod;
 import java.time.Duration;
 
 public class BaseTest {
+    private static final ThreadLocal<WebDriver> driver = new ThreadLocal<>();
 
-    WebDriver driver = new ChromeDriver();
-    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+    public static WebDriver getDriver() {
+        return driver.get();
+    }
 
     @BeforeMethod
     public void startUp() {
-        driver.get("https://www.trendyol.com");
-        WebElement closeButton = driver.findElement(By.className("modal-close"));
+        driver.set(new ChromeDriver());
+        getDriver().get("https://www.trendyol.com");
+        WebElement closeButton = getDriver().findElement(By.className("modal-close"));
         closeButton.click();
-        WebElement acceptButton = driver.findElement(By.id("onetrust-accept-btn-handler"));
+        WebElement acceptButton = getDriver().findElement(By.id("onetrust-accept-btn-handler"));
         acceptButton.click();
     }
 
     @AfterMethod
     public void tearDown() {
-        driver.quit();
+        getDriver().quit();
     }
 }

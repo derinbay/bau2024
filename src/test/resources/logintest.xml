@@ -1,0 +1,9 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+
+<suite name="LoginSuite" verbose="1" parallel="methods">
+    <test name="LoginTest" >
+        <classes>
+            <class name="com.bau.qa.LoginTest" />
+        </classes>
+    </test>
+</suite>
