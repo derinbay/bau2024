@@ -21,4 +21,12 @@ public class HomePage extends BasePage {
         WebElement loginButton = getDriver().findElement(By.className("account-user"));
         return loginButton.getText();
     }
+
+    public SearchResultPage search(String keyword) {
+        WebElement searchBar = getDriver().findElement(By.cssSelector("[data-testid=suggestion]"));
+        searchBar.sendKeys(keyword);
+        WebElement searchButton = getDriver().findElement(By.cssSelector("[data-testid=search-icon]"));
+        searchButton.click();
+        return new SearchResultPage();
+    }
 }
