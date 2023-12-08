@@ -4,6 +4,8 @@
     <test name="LoginTest" >
         <classes>
             <class name="com.bau.qa.LoginTest" />
+            <class name="com.bau.qa.BasketTest" />
+            <class name="com.bau.qa.SearchTest" />
         </classes>
     </test>
 </suite>

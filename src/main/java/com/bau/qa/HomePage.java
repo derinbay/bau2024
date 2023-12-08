@@ -1,32 +1,27 @@
 package com.bau.qa;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
-import java.time.Duration;
-
-import static com.bau.qa.BaseTest.getDriver;
 
 public class HomePage extends BasePage {
 
+    By accountUser = By.className("account-user");
+    By searchBar = By.cssSelector("[data-testid=suggestion]");
+    By searchIcon = By.cssSelector("[data-testid=search-icon]");
+
     public LoginPage clickLogin() {
-        WebElement loginButton = getDriver().findElement(By.className("account-user"));
-        loginButton.click();
+        click(accountUser);
         return new LoginPage();
     }
 
     public String getTextOfAccountButton() {
-        WebElement loginButton = getDriver().findElement(By.className("account-user"));
+        WebElement loginButton = findElement(accountUser);
         return loginButton.getText();
     }
 
     public SearchResultPage search(String keyword) {
-        WebElement searchBar = getDriver().findElement(By.cssSelector("[data-testid=suggestion]"));
-        searchBar.sendKeys(keyword);
-        WebElement searchButton = getDriver().findElement(By.cssSelector("[data-testid=search-icon]"));
-        searchButton.click();
+        findElement(searchBar).sendKeys(keyword);
+        click(searchIcon);
         return new SearchResultPage();
     }
 }

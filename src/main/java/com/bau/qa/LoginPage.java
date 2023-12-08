@@ -1,34 +1,29 @@
 package com.bau.qa;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-
-import static com.bau.qa.BaseTest.getDriver;
 
 public class LoginPage extends BasePage {
 
+    By emailTextBox = By.id("login-email");
+    By passwordTextBox = By.id("login-password-input");
+    By submitButton = By.className("submit");
+    By successElement = By.cssSelector("[data-testid=sliderList]");
+    By errorBox = By.id("error-box-wrapper");
+
     public void login(String email, String password, boolean isSuccess) {
-        WebElement emailTextBox = getDriver().findElement(By.id("login-email"));
-        emailTextBox.click();
-        emailTextBox.sendKeys(email);
-
-        WebElement passwordTextBox = getDriver().findElement(By.id("login-password-input"));
-        passwordTextBox.click();
-        passwordTextBox.sendKeys(password);
-
-        WebElement loginSubmitButton = getDriver().findElement(By.className("submit"));
-        loginSubmitButton.click();
+        findElement(emailTextBox).sendKeys(email);
+        findElement(passwordTextBox).sendKeys(password);
+        click(submitButton);
 
         if (isSuccess) {
-            wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[data-testid=sliderList]")));
+            wait.until(ExpectedConditions.visibilityOfElementLocated(successElement));
         } else {
-            wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("error-box-wrapper")));
+            wait.until(ExpectedConditions.visibilityOfElementLocated(errorBox));
         }
     }
 
     public String getWarningText() {
-        WebElement warningBox = getDriver().findElement(By.id("error-box-wrapper"));
-        return warningBox.getText();
+        return findElement(errorBox).getText();
     }
 }

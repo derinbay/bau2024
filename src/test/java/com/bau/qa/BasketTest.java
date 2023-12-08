@@ -1,27 +1,23 @@
 package com.bau.qa;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebElement;
+import org.testng.annotations.Test;
 
-import static com.bau.qa.BaseTest.getDriver;
+import static org.testng.Assert.assertTrue;
 
-public class BasketTest {
+public class BasketTest extends BaseTest {
 
-    /**
-     * 1- search "kazak" keyword
-     * 2- click first product
-     * 3- add to basket
-     * 4- assert that the product has beed added to basket
-     * */
+    @Test
+    public void shouldSearchAndAddToBasket() {
+        HomePage homePage = new HomePage();
+        SearchResultPage searchResultPage = homePage.search("kazak");
 
-    public static void main(String[] args) {
-        WebElement searchBar = getDriver().findElement(By.id("searchData"));
-        searchBar.sendKeys("tshirt");
-        WebElement searchButton = getDriver().findElement(By.className("searchBtn"));
-        searchButton.click();
+        ProductPage productPage = searchResultPage.clickFirstProduct();
+        productPage.addToBasket();
 
-        getDriver().findElement(By.id("searchData")).sendKeys("tshirt" + Keys.ENTER);
+        assertTrue(productPage.isCounterVisibleFromBasket(), "Counter is not visible!");
     }
 
+    //rest-assured
+    // create a request to get some data from a public api (omdbapi)
+    //
 }
