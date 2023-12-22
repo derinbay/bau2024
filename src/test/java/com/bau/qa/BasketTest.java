@@ -1,7 +1,9 @@
 package com.bau.qa;
 
+import io.restassured.RestAssured;
 import org.testng.annotations.Test;
 
+import static io.restassured.RestAssured.get;
 import static org.testng.Assert.assertTrue;
 
 public class BasketTest extends BaseTest {
@@ -16,8 +18,4 @@ public class BasketTest extends BaseTest {
 
         assertTrue(productPage.isCounterVisibleFromBasket(), "Counter is not visible!");
     }
-
-    //rest-assured
-    // create a request to get some data from a public api (omdbapi)
-    //
 }
