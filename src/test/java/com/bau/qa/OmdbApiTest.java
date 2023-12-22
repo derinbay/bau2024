@@ -19,4 +19,18 @@ public class OmdbApiTest {
                 .body("Search[0].Title", equalTo("Harry Potter and the Deathly Hallows: Part 2"))
                 .statusCode(200);
     }
+
+    @Test
+    public void shouldSendData() {
+        RestAssured.baseURI = "http://www.omdbapi.com";
+        given()
+                .param("s", "lord+of+the+rings")
+                .param("apikey", "c0db11a4")
+                .get("/")
+                .then()
+                //.body("Title", equalTo("The Lord of the Rings: The Fellowship of the Ring"))
+                .extract()
+                .response()
+                .prettyPrint();
+    }
 }
